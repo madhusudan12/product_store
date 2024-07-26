@@ -10,8 +10,7 @@ from metadata_store.serializers import (LocationSerializer, DepartmentSerializer
 
 
 class LocationViewSet(viewsets.ModelViewSet):
-    ordering = []
-    queryset = Location.objects.all()
+    queryset = Location.objects.all().order_by('-created_at')
     serializer_class = LocationSerializer
     permission_classes = [IsAuthenticated]
 
@@ -22,7 +21,7 @@ class DepartmentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         location_id = self.kwargs['location_pk']
-        return Department.objects.filter(location_id=location_id)
+        return Department.objects.filter(location_id=location_id).order_by('-created_at')
 
     def get_serializer_class(self):
         if self.request.method == 'GET' and str_to_bool(self.request.query_params.get("detail", "false")):
@@ -46,7 +45,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
             department = Department.objects.get(id=department_id, location_id=location_id)
         except Department.DoesNotExist:
             raise ValidationError("The specified department doesn't belong to the location")
-        return Category.objects.filter(department_id=department_id)
+        return Category.objects.filter(department_id=department_id).order_by('-created_at')
 
     def get_serializer_class(self):
         if self.request.method == 'GET' and str_to_bool(self.request.query_params.get("detail", "false")):
@@ -75,7 +74,7 @@ class SubCategoryViewSet(viewsets.ModelViewSet):
             raise ValidationError("The specified category does not belong to the given department.")
         except Department.DoesNotExist:
             raise ValidationError("The specified department does not belong to the given location.")
-        return SubCategory.objects.filter(category_id=category_id)
+        return SubCategory.objects.filter(category_id=category_id).order_by('-created_at')
 
     def get_serializer_class(self):
         if self.request.method == 'GET' and str_to_bool(self.request.query_params.get("detail", "false")):
@@ -95,7 +94,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        queryset = Product.objects.all()
+        queryset = Product.objects.all().order_by('-created_at')
         location_name = self.request.query_params.get('location_name')
         department_name = self.request.query_params.get('department_name')
         category_name = self.request.query_params.get('category_name')
