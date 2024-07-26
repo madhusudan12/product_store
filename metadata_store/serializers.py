@@ -68,8 +68,6 @@ class SubCategorySerializer(serializers.ModelSerializer):
         department_id = self.context['department_pk']
         location_id = self.context['location_pk']
 
-        # TODO: add a validation to check if there is already a subcategory with same name ans path
-
         try:
             category = Category.objects.get(id=category_id, department_id=department_id)
             department = Department.objects.get(id=department_id, location_id=location_id)

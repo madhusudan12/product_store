@@ -1,12 +1,19 @@
+
+from django.utils.decorators import method_decorator
+from django.core.cache import cache
 from rest_framework import viewsets
+from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
-from metadata_store.utils import str_to_bool
+from metadata_store.utils import str_to_bool, cache_response
 from metadata_store.models import Location, Department, Category, SubCategory, Product
 from metadata_store.serializers import (LocationSerializer, DepartmentSerializer, DepartmentDetailSerializer,
                                         CategorySerializer, CategoryDetailSerializer,
                                         SubCategorySerializer, SubCategoryDetailSerializer,
                                         ProductSerializer, ProductDetailSerializer)
+
+
+CACHE_TTL = 60 * 15
 
 
 class LocationViewSet(viewsets.ModelViewSet):
@@ -123,3 +130,12 @@ class ProductViewSet(viewsets.ModelViewSet):
         if self.request.method == 'GET' and str_to_bool(self.request.query_params.get("detail", "false")):
             return ProductDetailSerializer
         return ProductSerializer
+
+    @cache_response('product_list')
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @cache_response('product_retrieve')
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
