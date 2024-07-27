@@ -1,8 +1,6 @@
 
-from django.utils.decorators import method_decorator
-from django.core.cache import cache
+
 from rest_framework import viewsets
-from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 from metadata_store.utils import str_to_bool, cache_response
@@ -11,9 +9,6 @@ from metadata_store.serializers import (LocationSerializer, DepartmentSerializer
                                         CategorySerializer, CategoryDetailSerializer,
                                         SubCategorySerializer, SubCategoryDetailSerializer,
                                         ProductSerializer, ProductDetailSerializer)
-
-
-CACHE_TTL = 60 * 15
 
 
 class LocationViewSet(viewsets.ModelViewSet):

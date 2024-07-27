@@ -3,7 +3,7 @@ from django.core.cache import cache
 from django.conf import settings
 from rest_framework.response import Response
 
-CACHE_TTL = getattr(settings, 'CACHE_TTL', 300)
+CACHE_TTL = getattr(settings, 'CACHE_TTL', 15 * 60)
 
 
 def cache_response(prefix):
@@ -22,8 +22,6 @@ def cache_response(prefix):
             return response
         return wrapped_viewset_method
     return decorator
-
-
 
 
 def str_to_bool(value):
