@@ -21,12 +21,9 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Swagger First Blog ",
+        title="Products metadata",
         default_version='v1',
-        description="Test Swagger First Blog",
-        terms_of_service="https://www.ourapp.com/policies/terms/",
-        contact=openapi.Contact(email="contact@swaggerBlog.local"),
-        license=openapi.License(name="Test License"),
+        description="Product metadata",
     ),
     public=True,
     permission_classes=[permissions.AllowAny,],
