@@ -12,6 +12,7 @@ def cache_response(prefix):
         def wrapped_viewset_method(self, request, *args, **kwargs):
             query_params = request.GET.urlencode()
             path_params = ":".join([str(kwargs.get(k)) for k in kwargs.keys()])
+            # TODO: key can still be improved by sorting the query params
             cache_key = f"{prefix}:{path_params}:{query_params}"
             cached_data = cache.get(cache_key)
             if cached_data:

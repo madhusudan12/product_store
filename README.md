@@ -9,6 +9,7 @@ This is used to store and retrieve metadata of sku/product efficiently.
 
 - Python 3.x
 - PostgresSQL
+- Redis
 
 
 ### Installation
@@ -47,6 +48,16 @@ create database with the name you want to create it and grant all permissions to
 CREATE DATABASE product_store;
 ```
 
+
+### start redis
+
+start the redis server 
+```sh
+brew services start redis
+```
+
+
+
 ### env setup
 
 add a `.env` file that should include the following keys
@@ -58,6 +69,7 @@ DB_PASSWORD=db-password
 DB_HOST=host(localhost)
 DB_PORT=5432
 SECRET_KEY=django-secret-key
+REDIS_HOST_LOCATION=redis-host
 ```
 
 
