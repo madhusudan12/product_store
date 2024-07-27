@@ -42,7 +42,7 @@ class CategorySerializer(serializers.ModelSerializer):
         try:
             department = Department.objects.get(id=department_id, location_id=location_id)
         except Department.DoesNotExist:
-            raise serializers.ValidationError("The specified location does not exist.")
+            raise serializers.ValidationError("The specified department does not belong to the given location.")
         return validated_data
 
 
