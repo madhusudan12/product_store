@@ -4,6 +4,14 @@ from django.db import models
 
 
 class BaseModel(models.Model):
+    """
+    Abstract base model providing common fields for other models.
+
+    Fields:
+        id (UUIDField): Primary key, generated automatically.
+        created_at (DateTimeField): The date and time when the object was created.
+        updated_at (DateTimeField): The date and time when the object was last updated.
+    """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -13,6 +21,12 @@ class BaseModel(models.Model):
 
 
 class Location(BaseModel):
+    """
+    Model representing location information.
+
+    Fields:
+        name (CharField): The name of the location.
+    """
     name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
@@ -20,6 +34,16 @@ class Location(BaseModel):
 
 
 class Department(BaseModel):
+    """
+    Model representing a department within a location.
+
+    Fields:
+        name (CharField): The name of the department.
+        location (ForeignKey): The location to which the department belongs.
+
+    Meta:
+        constraints (list): Ensures that each department name is unique within a location.
+    """
     name = models.CharField(max_length=255)
     location = models.ForeignKey(Location, related_name='departments', on_delete=models.CASCADE)
 
@@ -33,6 +57,16 @@ class Department(BaseModel):
 
 
 class Category(BaseModel):
+    """
+    Model representing a category within a department.
+
+    Fields:
+        name (CharField): The name of the category.
+        department (ForeignKey): The department to which the category belongs.
+
+    Meta:
+        constraints (list): Ensures that each category name is unique within a department.
+    """
     name = models.CharField(max_length=255)
     department = models.ForeignKey(Department, related_name='categories', on_delete=models.CASCADE)
 
@@ -46,6 +80,16 @@ class Category(BaseModel):
 
 
 class SubCategory(BaseModel):
+    """
+    Model representing a subcategory within a category.
+
+    Fields:
+        name (CharField): The name of the subcategory.
+        category (ForeignKey): The category to which the subcategory belongs.
+
+    Meta:
+        constraints (list): Ensures that each subcategory name is unique within a category.
+    """
     name = models.CharField(max_length=255)
     category = models.ForeignKey(Category, related_name='subcategories', on_delete=models.CASCADE)
 
@@ -59,6 +103,13 @@ class SubCategory(BaseModel):
 
 
 class Product(BaseModel):
+    """
+    Model representing a product within a subcategory.
+
+    Fields:
+        name (CharField): The name of the product.
+        subcategory (ForeignKey): The subcategory to which the product belongs.
+    """
     name = models.CharField(max_length=255)
     subcategory = models.ForeignKey(SubCategory, related_name='products', on_delete=models.CASCADE)
 

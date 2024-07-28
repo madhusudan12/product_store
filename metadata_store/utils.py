@@ -7,6 +7,15 @@ CACHE_TTL = getattr(settings, 'CACHE_TTL', 15 * 60)
 
 
 def cache_response(prefix):
+    """
+    Decorator that caches the response of a retrieve/list viewset methods.
+
+    Args:
+        prefix (str): The prefix for the cache key.
+
+    Returns:
+        function: The wrapped viewset method that caches its response.
+    """
     def decorator(viewset_method):
         @wraps(viewset_method)
         def wrapped_viewset_method(self, request, *args, **kwargs):
