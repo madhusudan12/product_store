@@ -115,5 +115,7 @@ class Product(BaseModel):
 
     # TODO: do (subcategory,name) fields need to be unique together?
 
+    # TODO: can a product be included in multiple subcategories?
+
     def __str__(self):
         return self.name
