@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-deployment
+  labels:
+    app: django
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: django
+  template:
+    metadata:
+      labels:
+        app: django
+    spec:
+      containers:
+      - name: django
+        image: 581699663655.dkr.ecr.ap-south-1.amazonaws.com/product_store:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: django-config
+        - secretRef:
+            name: django-secret
+        command: ["/app/entrypoint.sh"]
+        args: ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]
